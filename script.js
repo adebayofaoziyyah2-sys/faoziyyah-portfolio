@@ -94,86 +94,11 @@
     });
   }
 
-  /* ---------- 5. Hero rotating word ---------- */
-  // Cycles through interests with a simple type/delete effect.
-  var words = [
-    "data analysis",
-    "technology for good",
-    "confident communication",
-    "new technology"
-  ];
-  var typedEl = document.getElementById("typedText");
-  var wordIndex = 0;
-  var charIndex = words[0].length;
-  var deleting = true;
-  var pauseTicks = 0; // counts ticks to wait on full / empty word
+  /* ---------- 5. Hero tagline ---------- */
+  // The hero subtitle is now a fixed tagline (no rotation), so there is
+  // nothing to animate here. Kept as a placeholder for future hero effects.
 
-  // Skip the animation for users who prefer reduced motion
-  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  if (typedEl && !reduceMotion) {
-    setInterval(function () {
-      // Pause briefly when a word is fully typed or fully deleted
-      if (pauseTicks > 0) {
-        pauseTicks--;
-        return;
-      }
-      var current = words[wordIndex];
-      if (deleting) {
-        charIndex--;
-        typedEl.textContent = current.slice(0, Math.max(charIndex, 0));
-        if (charIndex <= 0) {
-          // Move to next word and start typing it
-          wordIndex = (wordIndex + 1) % words.length;
-          deleting = false;
-          pauseTicks = 4; // short pause before typing
-        }
-      } else {
-        var next = words[wordIndex];
-        charIndex++;
-        typedEl.textContent = next.slice(0, Math.min(charIndex, next.length));
-        if (charIndex >= next.length) {
-          // Word complete: pause, then start deleting
-          deleting = true;
-          pauseTicks = 12; // ~1 second pause on full word
-        }
-      }
-    }, 90);
-  }
-
-  /* ---------- 6. "Explore" list demo (browser-only storage) ---------- */
-  var exploreForm = document.getElementById("exploreForm");
-  var exploreInput = document.getElementById("exploreInput");
-  var exploreList = document.getElementById("exploreList");
-  var STORAGE_KEY = "faoziyyah-explore-items";
-
-  function addExploreItem(text) {
-    var li = document.createElement("li");
-    li.textContent = text;
-    exploreList.appendChild(li);
-  }
-
-  // Load previously added items (this browser only)
-  try {
-    var saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    saved.forEach(addExploreItem);
-  } catch (e) { /* storage unavailable — ignore */ }
-
-  exploreForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-    var value = exploreInput.value.trim();
-    if (!value) return;
-    addExploreItem(value);
-    exploreInput.value = "";
-    exploreInput.focus();
-    try {
-      var current = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-      current.push(value);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
-    } catch (e) { /* storage unavailable — ignore */ }
-  });
-
-  /* ---------- 7. Contact form (no backend needed) ---------- */
+  /* ---------- 6. Contact form (no backend needed) ---------- */
   // Builds a "mailto:" link so the visitor's own email app sends the message.
   var contactForm = document.getElementById("contactForm");
   var formError = document.getElementById("formError");
@@ -199,7 +124,7 @@
     window.location.href = "mailto:" + myEmail + "?subject=" + subject + "&body=" + body;
   });
 
-  /* ---------- 8. Footer year (only if the year element exists) ---------- */
+  /* ---------- 7. Footer year (only if the year element exists) ---------- */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 })();
